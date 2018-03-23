@@ -36,8 +36,8 @@ def schedule_scan():
 
 
 def main():
-    schedule.every(5).seconds.do(schedule_scan())
+    schedule.every(5).seconds.do(schedule_scan)
 
 
-if __name__ == '__main__':
-    main()
+# if __name__ == '__main__':
+#     main()

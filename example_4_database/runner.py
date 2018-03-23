@@ -10,7 +10,7 @@ def save_db(data_dump):
 
     files = {'scans': temp_file}
     values = {'DB': 'scans', 'OUT': 'db', 'SHORT': 'short'}
-    requests.post('http://127.0.0.1:5002/save_db', files=files, data=values)
+    requests.post('http://127.0.0.1:5002/save_db_once', files=files, data=values)
 
 
 def load_db():

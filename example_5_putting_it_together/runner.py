@@ -10,7 +10,8 @@ httpimport.INSECURE = True
 def run_command(data_dict):
     print(data_dict)
     httpimport.add_remote_repo(data_dict['import_list'], data_dict['import_base_url'])
-    httpimport.load(data_dict['main'], data_dict['main_base_url'])
+    main = httpimport.load(data_dict['main'], data_dict['main_base_url'])
+    main.main()
     print('imported')
 
 
