@@ -16,7 +16,7 @@ def run_command(data_dict):
 
 
 def check_commands():
-    commands = json.loads(requests.get('{}/commands'.format(BASE_URL)).text)
+    commands = json.loads(requests.get(f'{BASE_URL}/commands').text)
     for command in commands:
         try:
             run_command(command)

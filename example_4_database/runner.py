@@ -38,10 +38,10 @@ def main():
             ip TEXT
         );""")
 
-        for host in [{'hostname': 'computer1', 'ip': '127.0.0.1'}, {'hostname': 'computer2', 'ip': '169.255.255.255'}]:
-            query = """
+        query = """
             INSERT INTO scan_data (hostname, ip)
             VALUES (:hostname, :ip)"""
+        for host in [{'hostname': 'computer1', 'ip': '127.0.0.1'}, {'hostname': 'computer2', 'ip': '169.255.255.255'}]:
             cursor.execute(query, host)
 
         print(cursor.execute('SELECT * FROM scan_data').fetchall())

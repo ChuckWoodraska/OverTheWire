@@ -11,9 +11,11 @@ print(dir(hi))
 hi.HelloWorld().print_hello()
 
 import_list = ['hello', 'neat']
-obj_dict = {}
-for item in import_list:
-	obj_dict[item] = httpimport.load(item, 'http://127.0.0.1:5002')
+obj_dict = {
+	item: httpimport.load(item, 'http://127.0.0.1:5002')
+	for item in import_list
+}
+
 obj_dict['neat'].Neat().print_neat()
 print(dir(obj_dict['hello'].hi))
 obj_dict['hello'].hi.HelloWorld().print_hello()

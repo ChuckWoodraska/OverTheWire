@@ -41,14 +41,14 @@ def commands():
 @app.route('/save_db', methods=['POST'])
 def save_db():
     f = request.files['scans']
-    f.save(os.path.join('./db_files', '{}{}.db'.format(f.filename, datetime.now())))
+    f.save(os.path.join('./db_files', f'{f.filename}{datetime.now()}.db'))
     return jsonify({'data': 'file uploaded successfully'})
 
 
 @app.route('/save_db_once', methods=['POST'])
 def save_db_once():
     f = request.files['scans']
-    f.save(os.path.join('./db_files', '{}.db'.format(f.filename)))
+    f.save(os.path.join('./db_files', f'{f.filename}.db'))
     return jsonify({'data': 'file uploaded successfully'})
 
 

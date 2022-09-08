@@ -13,21 +13,17 @@ logger.setLevel(logging.DEBUG)
 class MemoryImporter:
     def __init__(self, modules, base_url):
         self.module_names = modules
-        self.base_url = base_url + '/'
+        self.base_url = f'{base_url}/'
 
     def find_module(self, fullname, path=None):
         if fullname.split('.')[0] not in self.module_names:
             return None
         try:
-            loader = importlib.util.spec_from_file_location(fullname, path)
-            if loader:
+            if loader := importlib.util.spec_from_file_location(fullname, path):
                 return None
         except ImportError:
             pass
-        if fullname.split('.').count(fullname.split('.')[-1]) > 1:
-            return None
-
-        return self
+        return None if fullname.split('.').count(fullname.split('.')[-1]) > 1 else self
 
     def load_module(self, name):
         if name in sys.modules:
@@ -36,8 +32,8 @@ class MemoryImporter:
         if name.split('.')[-1] in sys.modules:
             return sys.modules[name.split('.')[-1]]
 
-        module_url = '{}{}.py'.format(self.base_url, name.replace('.', '/'))
-        package_url = '{}{}/__init__.py'.format(self.base_url, name.replace('.', '/'))
+        module_url = f"{self.base_url}{name.replace('.', '/')}.py"
+        package_url = f"{self.base_url}{name.replace('.', '/')}/__init__.py"
         final_url = None
         final_src = None
 
@@ -63,11 +59,7 @@ class MemoryImporter:
         mod = types.ModuleType(name)
         mod.__loader__ = self
         mod.__file__ = final_url
-        if not package_src:
-            mod.__package__ = name
-        else:
-            mod.__package__ = name.split('.')[0]
-
+        mod.__package__ = name.split('.')[0] if package_src else name
         mod.__path__ = ['/'.join(mod.__file__.split('/')[:-1]) + '/']
         sys.modules[name] = mod
         exec(final_src, mod.__dict__)
@@ -76,8 +68,6 @@ class MemoryImporter:
 
 def load(module_name, url='http://localhost:8000/'):
     importer = MemoryImporter([module_name], url)
-    loader = importer.find_module(module_name)
-    if loader:
-        module = loader.load_module(module_name)
-        if module:
+    if loader := importer.find_module(module_name):
+        if module := loader.load_module(module_name):
             return module
